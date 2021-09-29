@@ -4,10 +4,9 @@ import com.example.Schedulers.data.MessageRepository;
 import com.example.Schedulers.domain.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestController
@@ -28,6 +27,21 @@ public class MessageController {
             log.info("------message published------");
         } catch (Exception exception) {
             log.error("error while publishing message : " + exception.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public void updateMessage(@PathVariable String id, @RequestBody Message message) {
+        try {
+            Message messageOld = messageRepository.findById(id).get();
+            messageOld.setMessage(message.getMessage());
+            messageOld.setReceiver(message.getReceiver());
+            messageOld.setSender(message.getSender());
+            messageOld.setMessageStatus(message.getMessageStatus());
+
+            messageRepository.save(messageOld);
+        } catch (NoSuchElementException exception) {
+            log.error("error while fetching message : {}", exception.getMessage());
         }
     }
 }

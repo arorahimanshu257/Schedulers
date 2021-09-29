@@ -21,7 +21,5 @@ public class Message {
     private String sender;
     private String receiver;
     private MessageStatus messageStatus;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
 }

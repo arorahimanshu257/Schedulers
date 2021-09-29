@@ -21,7 +21,7 @@ public class SchedulerService {
         this.randomStrings = randomStrings;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void scheduleMessages() {
         log.info("-----instantiating a new message-----");
         logMessages();
@@ -38,9 +38,10 @@ public class SchedulerService {
         log.info("------message published-------");
     }
 
-    @Scheduled(fixedDelay = 600000, initialDelay = 60000)
+    // <minute> <hour> <day-of-month> <month> <day-of-week> cron job
+    @Scheduled(cron = "@hourly")
     public void scheduleCleanDatabase() {
-        log.info("-----cleaning database after 10 minutes ------");
+        log.info("-----cleaning database after 1 hour ------");
         log.info("purged {} items", messageRepository.count());
         messageRepository.deleteAll();
     }
